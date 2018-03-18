@@ -1,0 +1,4 @@
+scikit-image
+numpy
+scipy
+tensorflow
