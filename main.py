@@ -1,0 +1,12 @@
+"""High level pipeline for Pokemon WGAN."""
+
+from __future__ import print_function
+from __future__ import absolute_import
+
+import numpy as np
+import tensorflow as tf
+
+# from models.support_vector_machine import SupportVectorMachine
+# from train_eval_model import train_model, eval_model, train_model_qp
+# from utils.io_tools import read_dataset
+# from utils.data_tools import preprocess_data
