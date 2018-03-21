@@ -6,13 +6,13 @@ from skimage.transform import resize
 from PIL import Image
 
 
-def preprocess_data(data_txt_file, image_data_path, process_method='default'):
-    """Preprocesses dataset.
+def preprocess_data(image_data_path, image_output_path, process_method='default'):
+    """Preprocesse Pokemon images.
 
     Args:
         data(dict): Python dict loaded using io_tools.
         process_method(str): processing methods needs to support
-          ['raw', 'default'].
+          ['default', 'rgb', 'hsv'].
 
         if process_method is 'default':
           1. Convert images to range [0,1].
@@ -31,19 +31,18 @@ def preprocess_data(data_txt_file, image_data_path, process_method='default'):
         Nothing to return.
         Preprocessed image will be automatically saved in file
     """
-
     # First, we will resize all the images for pokemon to the same size,
     # in order to feed into DCGAN.
-    imgdir = "../data/image_data"
-    dstdir = "../data/resized_data"
+    # imgdir = "../data/image_data" = image_data_path
+    dstdir = "./data/resized_data"
 
     # If dest directory not exists, create dir
     if not os.path.isdir(dstdir):
         os.mkdir(dstdir)
 
     # Resize all the images to (256, 256)
-    for imname in os.listdir(imgdir):
-        img = io.imread(os.path.join(imgdir, imname))
+    for imname in os.listdir(image_data_path):
+        img = io.imread(os.path.join(image_data_path, imname))
         img = resize(img, (256, 256), mode='reflect')
         io.imsave(os.path.join(dstdir, imname), img)
 
@@ -51,16 +50,16 @@ def preprocess_data(data_txt_file, image_data_path, process_method='default'):
     # selected methods, it may give different accuracy.
     # Change input dir for all of the images.
     inpdir = dstdir
-    outdir = "../data/preprocessed_data"
+    # outdir = "../data/preprocessed_data" = image_output_path
 
     # If output directory not exists, create dir
-    if not os.path.isdir(outdir):
-        os.mkdir(outdir)
+    if not os.path.isdir(image_output_path):
+        os.mkdir(image_output_path)
 
     if process_method == 'default':
-
         # If the image channel is RGBA, then convert to
         # gray-scale and back to RGB
+
         for imname in os.listdir(inpdir):
 
             # Image.open -> opens and identifies the given image file.
@@ -79,18 +78,54 @@ def preprocess_data(data_txt_file, image_data_path, process_method='default'):
 
                 # 3rd is the alpha channel
                 gray2rgb.paste(img, mask=img.split()[3])
-                gray2rgb.save(os.path.join(outdir, imname.split('.')[0] + '.jpg'), 'JPEG')
+                gray2rgb.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
             else:
                 img.convert(mode='RGB')
-                img.save(os.path.join(outdir, imname.split('.')[0] + '.jpg'), 'JPEG')
+                img.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
 
     elif process_method == 'rgb':
         # If the image channel is RGBA, then convert to RGB
-        pass
+
+        for imname in os.listdir(inpdir):
+            img = Image.open(os.path.join(inpdir, imname))
+            if img.mode == 'RGBA':
+                # required for img.split()
+                img.load()
+
+                # Creates a new image using `RGB` mode.
+                rgba2rgb = Image.new("RGB", img.size)
+                rgba2rgb.paste(img, mask=img.split()[3])
+                rgba2rgb.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
+            else:
+                img.convert(mode='RGB')
+                img.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
 
     elif process_method == 'hsv':
         # If the image channel is RGBA, then convert to hsv
-        pass
+
+        for imname in os.listdir(inpdir):
+            img = Image.open(os.path.join(inpdir, imname))
+            if img.mode == 'RGBA':
+                # required for img.split()
+                img.load()
+
+                # Creates a new image using `HSV` mode.
+                rgba2hsv = Image.new("HSV", img.size)
+                hsv2rgb = rgba2hsv.convert(mode='RGB', colors=256)
+                # 3rd is the alpha channel
+                hsv2rgb.paste(img, mask=img.split()[3])
+                hsv2rgb.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
+            else:
+                img.convert(mode='HSV')
+                img.convert(mode='RGB')
+                img.save(os.path.join(
+                    image_output_path, imname.split('.')[0] + '.jpg'), 'JPEG')
 
     else:
-        print("Method" + process_method + "is supported here. You wanna give it a try on your own? :)")
+        print("Method" + process_method +
+              "is supported here. You wanna give it a try on your own? :)")
