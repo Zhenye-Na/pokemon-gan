@@ -15,3 +15,6 @@ from utils.io_tools import read_dataset
 
 # Read image into dictionary
 data = train_set = read_dataset("data/train.txt", "data/image_data/")
+
+# Preprocess all of the Pokemon images
+preprocess_data("./data/image_data", "./data/preprocessed_data", 'default')
