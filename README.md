@@ -104,16 +104,6 @@ As I have only two-hour GPU option in my account! So I have only get two images 
 ![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch50.jpg)
 ![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch100.jpg)
 
-<<<<<<< HEAD
-||||||| merged common ancestors
-![]()
-![]()
-![]()
-=======
-![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch50.jpg)
-![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch100.jpg)
->>>>>>> 52e5b3e6ce0e775968ded7cf97c1309ce8ee4d45
-
 
 ## References
 * https://www.oreilly.com/learning/generative-adversarial-networks-for-beginners
