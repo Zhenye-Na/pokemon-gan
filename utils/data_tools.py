@@ -1,9 +1,10 @@
 """Input and output helpers to load in data."""
 
 import tensorflow as tf
+import os
 
 
-def process_data():
+def process_data(HEIGHT, WIDTH, BATCH_SIZE, CHANNEL):
     """Process data.
 
     Args:
@@ -16,9 +17,11 @@ def process_data():
 
     """
     # current_dir = os.getcwd()
-    current_dir = '../'
+
+    # current_dir = './'
     # parent = os.path.dirname(current_dir)
-    pokemon_dir = os.path.join(current_dir, 'data/preprocessed_data')
+    # pokemon_dir = os.path.join(current_dir, 'data/preprocessed_data')
+    pokemon_dir = '/preprocessed_data'
     images = []
     for each in os.listdir(pokemon_dir):
         images.append(os.path.join(pokemon_dir, each))
@@ -31,6 +34,7 @@ def process_data():
     content = tf.read_file(images_queue[0])
     image = tf.image.decode_jpeg(content, channels=CHANNEL)
 
+    # Double the image by flipping left to right.
     image = tf.image.random_flip_left_right(image)
     image = tf.image.random_brightness(image, max_delta=0.1)
     image = tf.image.random_contrast(image, lower=0.9, upper=1.1)
