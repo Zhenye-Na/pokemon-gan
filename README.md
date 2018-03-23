@@ -5,7 +5,14 @@ Generating Pokemon with a Generative Adversarial Network
 This project is inspired by **Siraj Raval** in his awesome [video](https://youtu.be/yz6dNf7X7SA).  
 The code is inspired by [Newmu](https://github.com/Newmu/dcgan_code), [kvpratama](https://github.com/kvpratama/gan/tree/master/pokemon), [moxiegushi](https://github.com/moxiegushi/pokeGAN) along with my own implemetation.
 
+## Training process
 Training process is very **long**! Please do not train on your little tiny laptop! I have used `Floydhub` to train my model. However, only 2 hours of free trial for GPU option. You can select your favorite cloud computing platform ro train this awesome project, if you find `Training` is interesting.
+
+If you wanna, you can monitor the training process I upload in `Floydhub` @ [this webpage](https://www.floydhub.com/zayne/projects/pokemon-gan/29).
+
+```bash
+floyd run --cpu --env tensorflow-1.3 --message run --data zayne/datasets/preprocessedpokemon/1:/preprocessed_data 'python main.py'
+```
 
 ## Dependencies
 
