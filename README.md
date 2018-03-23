@@ -101,9 +101,8 @@ The dataset of pokemon images are gathered from various sources:
 ## Training result
 As I have only two-hour GPU option in my account! So I have only get three images of new Pokemons.
 
-![]()
-![]()
-![]()
+![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch50.jpg)
+![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch100.jpg)
 
 
 ## References
