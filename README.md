@@ -8,11 +8,19 @@ The code is inspired by [Newmu](https://github.com/Newmu/dcgan_code), [kvpratama
 ## Training process
 Training process is very **long**! Please do not train on your little tiny laptop! I have used `Floydhub` to train my model. However, only 2 hours of free trial for GPU option. You can select your favorite cloud computing platform ro train this awesome project, if you find `Training` is interesting.
 
-If you wanna, you can monitor the training process I upload in `Floydhub` @ [this webpage](https://www.floydhub.com/zayne/projects/pokemon-gan/29).
+If you wanna, you can monitor the training process I upload in `Floydhub` @ [here](https://www.floydhub.com/zayne/projects/pokemon-gan/29) with CPU  and [here](https://www.floydhub.com/zhenye/projects/pokemons/3) with GPU which is much faster!
 
 ```bash
 floyd run --cpu --env tensorflow-1.3 --message run --data zayne/datasets/preprocessedpokemon/1:/preprocessed_data 'python main.py'
 ```
+
+### Training metrics
+This is the load of my training with GPU:  
+![GPU](https://github.com/Zhenye-Na/pokemon-gan/blob/master/system-metrics.png)
+
+This is the load of my training with CPU:  
+![](https://github.com/Zhenye-Na/pokemon-gan/blob/master/system%20metrics%20cpu.png)
+
 
 ## Dependencies
 
