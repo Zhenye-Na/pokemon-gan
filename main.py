@@ -39,7 +39,6 @@ def main(_):
     """
     pp.pprint(flags.FLAGS.__flags)
 
-    # w_decay_factor = FLAGS.w_decay_factor
     HEIGHT = FLAGS.HEIGHT
     WIDTH = FLAGS.WIDTH
     EPOCH = FLAGS.EPOCH
@@ -49,15 +48,10 @@ def main(_):
     learning_rate = FLAGS.learning_rate
     process_method = FLAGS.process_method
     # newPoke_path = './' + VERSION
-    newPoke_path = VERSION
+    newPoke_path = './' + FLAGS.VERSION
 
-    # Preprocess all of the Pokemon images
-    # read_dataset("./data/image_data",
-    #              "./data/preprocessed_data", process_method)
 
-    # Process data
-    # process_data(HEIGHT, WIDTH, BATCH_SIZE, CHANNEL)
-
+    # Training
     train(
         HEIGHT=FLAGS.HEIGHT,
         WIDTH=FLAGS.WIDTH,
@@ -67,29 +61,8 @@ def main(_):
         VERSION=FLAGS.VERSION,
         learning_rate=FLAGS.learning_rate,
         process_method=FLAGS.process_method,
-        newPoke_path=VERSION
+        newPoke_path=newPoke_path
     )
-
-    # Test
-    # random_dim = 100
-    # with tf.variable_scope('input'):
-    #     real_image = tf.placeholder(
-    #         tf.float32, shape=[None, HEIGHT, WIDTH, CHANNEL], name='real_image')
-    #     random_input = tf.placeholder(
-    #         tf.float32, shape=[None, random_dim], name='rand_input')
-    #     is_train = tf.placeholder(tf.bool, name='is_train')
-
-    # # wgan
-    # fake_image = generator(random_input, random_dim, is_train, CHANNEL)
-    # real_result = discriminator(real_image, is_train)
-    # fake_result = discriminator(fake_image, is_train, reuse=True)
-    # sess = tf.InteractiveSession()
-    # sess.run(tf.global_variables_initializer())
-    # variables_to_restore = slim.get_variables_to_restore(include=['gen'])
-    # print(variables_to_restore)
-    # saver = tf.train.Saver(variables_to_restore)
-    # ckpt = tf.train.latest_checkpoint('./model/' + VERSION)
-    # saver.restore(sess, ckpt)
 
 
 if __name__ == '__main__':
