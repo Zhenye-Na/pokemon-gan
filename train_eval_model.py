@@ -8,6 +8,7 @@ import tensorflow as tf
 from funcs import *
 from utils.data_tools import process_data
 
+
 def lrelu(x, n, leak=0.2):
     return tf.maximum(x, leak * x, name=n)
 
@@ -296,20 +297,19 @@ def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, pro
             # print({"metric": "discriminator loss", "value": dLoss})
             # print({"metric": "generator loss", "value": gLoss})
 
-            print("Training: [%d / %d], d_loss: %f, g_loss: %f, elapsed time: %7f seconds" %
+            print("Training: [%d / %d], d_loss: %f, g_loss: %f, elapsed time: %5f seconds" %
                   (i, j, dLoss, gLoss, elapsed))
 
         # save check point every 500 epoch
         if i % 500 == 0:
-            # if not os.path.exists('./model/' + VERSION):
-            #     os.makedirs('./model/' + VERSION)
+            if not os.path.exists('./model/' + VERSION):
+                os.makedirs('./model/' + VERSION)
             saver.save(sess, './model/' + VERSION + '/' + str(i))
-            # saver.save(sess, '/output/' + VERSION + '/' + str(i))
 
         if i % 50 == 0:
             # save images
-            # if not os.path.exists(newPoke_path):
-            #     os.makedirs(newPoke_path)
+            if not os.path.exists(newPoke_path):
+                os.makedirs(newPoke_path)
             sample_noise = np.random.uniform(-1.0, 1.0,
                                              size=[batch_size, random_dim]).astype(np.float32)
             imgtest = sess.run(fake_image, feed_dict={
