@@ -1,9 +1,12 @@
 """Train model and eval model helpers."""
 from __future__ import print_function
 
+import os
+import time
 import numpy as np
 import tensorflow as tf
-
+from funcs import *
+from utils.data_tools import process_data
 
 def lrelu(x, n, leak=0.2):
     return tf.maximum(x, leak * x, name=n)
@@ -103,7 +106,7 @@ def generator(input, random_dim, is_train, CHANNEL, reuse=False):
                 stddev=0.02), name='conv6')
         # bn6 = tf.contrib.layers.batch_norm(conv6, is_training=is_train, epsilon=1e-5, decay = 0.9,  updates_collections=None, scope='bn6')
         act6 = tf.nn.tanh(conv6, name='act6')
-        return act6
+    return act6
 
 
 def discriminator(input, is_train, reuse=False):
@@ -185,4 +188,159 @@ def discriminator(input, is_train, reuse=False):
         logits = tf.add(tf.matmul(fc1, w2), b2, name='logits')
         # dcgan
         acted_out = tf.nn.sigmoid(logits)
-        return logits  # , acted_out
+    return logits  # , acted_out
+
+
+# def load(checkpoint_dir):
+#     import re
+#     print(" [*] Reading checkpoints...")
+#     checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir)
+
+#     ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
+#     if ckpt and ckpt.model_checkpoint_path:
+#         ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
+#         self.saver.restore(self.sess, os.path.join(checkpoint_dir, ckpt_name))
+#         counter = int(next(re.finditer("(\d+)(?!.*\d)", ckpt_name)).group(0))
+#         print(" [*] Success to read {}".format(ckpt_name))
+#         return True, counter
+#     else:
+#         print(" [*] Failed to find a checkpoint")
+#         return False, 0
+
+
+def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, process_method, newPoke_path
+          ):
+    random_dim = 100
+
+    with tf.variable_scope('input'):
+        # real and fake image placholders
+        real_image = tf.placeholder(
+            tf.float32, shape=[None, HEIGHT, WIDTH, CHANNEL], name='real_image')
+        random_input = tf.placeholder(
+            tf.float32, shape=[None, random_dim], name='rand_input')
+        is_train = tf.placeholder(tf.bool, name='is_train')
+
+    # wgan
+    fake_image = generator(random_input, random_dim, is_train, CHANNEL)
+
+    real_result = discriminator(real_image, is_train)
+    fake_result = discriminator(fake_image, is_train, reuse=True)
+
+    # This optimizes the discriminator.
+    d_loss = tf.reduce_mean(fake_result) - tf.reduce_mean(real_result)
+    g_loss = -tf.reduce_mean(fake_result)  # This optimizes the generator.
+
+    t_vars = tf.trainable_variables()
+    d_vars = [var for var in t_vars if 'dis' in var.name]
+    g_vars = [var for var in t_vars if 'gen' in var.name]
+    # test
+    # print(d_vars)
+    trainer_d = tf.train.RMSPropOptimizer(
+        learning_rate=learning_rate).minimize(d_loss, var_list=d_vars)
+    trainer_g = tf.train.RMSPropOptimizer(
+        learning_rate=learning_rate).minimize(g_loss, var_list=g_vars)
+    # clip discriminator weights
+    d_clip = [v.assign(tf.clip_by_value(v, -0.01, 0.01)) for v in d_vars]
+
+    batch_size = BATCH_SIZE
+    image_batch, samples_num = process_data(HEIGHT, WIDTH, BATCH_SIZE, CHANNEL)
+
+    batch_num = int(samples_num / batch_size)
+    total_batch = 0
+    sess = tf.Session()
+    saver = tf.train.Saver()
+    sess.run(tf.global_variables_initializer())
+    sess.run(tf.local_variables_initializer())
+
+    # Prepare training
+    save_path = saver.save(sess, "./tmp/model.ckpt")
+    # save_path = saver.save(sess, "/output/tmp/model.ckpt")
+    ckpt = tf.train.latest_checkpoint('./model/' + VERSION)
+    saver.restore(sess, save_path)
+    coord = tf.train.Coordinator()
+    threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+
+    print('total training sample num: %d' % samples_num)
+    print('batch size: %d, batch num per epoch: %d, epoch num: %d' %
+          (batch_size, batch_num, EPOCH))
+    print('Start training...')
+
+    # Training
+    for i in range(EPOCH):
+        print("EPOCH: %d" % (i))
+        for j in range(batch_num):
+            t = time.time()
+            # print("batch_num: %d" % (j))
+            d_iters = 5  # Iterations for discriminator
+            g_iters = 1  # Iterations for generator
+
+            train_noise = np.random.uniform(-1.0, 1.0,
+                                            size=[batch_size, random_dim]).astype(np.float32)
+            for k in range(d_iters):
+                # print("d_iters: %d" % (k))
+                train_image = sess.run(image_batch)
+                # wgan clip weights
+                sess.run(d_clip)
+
+                # Update the discriminator
+                _, dLoss = sess.run([trainer_d, d_loss],
+                                    feed_dict={random_input: train_noise, real_image: train_image, is_train: True})
+
+            # Update the generator
+            for k in range(g_iters):
+                # train_noise = np.random.uniform(-1.0, 1.0, size=[batch_size, random_dim]).astype(np.float32)
+                _, gLoss = sess.run([trainer_g, g_loss],
+                                    feed_dict={random_input: train_noise, is_train: True})
+
+            elapsed = time.time() - t
+            # print({"metric": "discriminator loss", "value": dLoss})
+            # print({"metric": "generator loss", "value": gLoss})
+
+            print("Training: [%d / %d], d_loss: %f, g_loss: %f, elapsed time: %7f seconds" %
+                  (i, j, dLoss, gLoss, elapsed))
+
+        # save check point every 500 epoch
+        if i % 500 == 0:
+            # if not os.path.exists('./model/' + VERSION):
+            #     os.makedirs('./model/' + VERSION)
+            saver.save(sess, './model/' + VERSION + '/' + str(i))
+            # saver.save(sess, '/output/' + VERSION + '/' + str(i))
+
+        if i % 50 == 0:
+            # save images
+            # if not os.path.exists(newPoke_path):
+            #     os.makedirs(newPoke_path)
+            sample_noise = np.random.uniform(-1.0, 1.0,
+                                             size=[batch_size, random_dim]).astype(np.float32)
+            imgtest = sess.run(fake_image, feed_dict={
+                               random_input: sample_noise, is_train: False})
+            # imgtest = imgtest * 255.0
+            # imgtest.astype(np.uint8)
+            save_images(imgtest, [8, 8], newPoke_path +
+                        '/epoch' + str(i) + '.jpg')
+
+            # print('train:[%d], d_loss:%f, g_loss:%f' % (i, dLoss, gLoss))
+    coord.request_stop()
+    coord.join(threads)
+
+
+def test():
+    random_dim = 100
+    with tf.variable_scope('input'):
+        real_image = tf.placeholder(
+            tf.float32, shape=[None, HEIGHT, WIDTH, CHANNEL], name='real_image')
+        random_input = tf.placeholder(
+            tf.float32, shape=[None, random_dim], name='rand_input')
+        is_train = tf.placeholder(tf.bool, name='is_train')
+
+    # wgan
+    fake_image = generator(random_input, random_dim, is_train, CHANNEL)
+    real_result = discriminator(real_image, is_train)
+    fake_result = discriminator(fake_image, is_train, reuse=True)
+    sess = tf.InteractiveSession()
+    sess.run(tf.global_variables_initializer())
+    variables_to_restore = slim.get_variables_to_restore(include=['gen'])
+    print(variables_to_restore)
+    saver = tf.train.Saver(variables_to_restore)
+    ckpt = tf.train.latest_checkpoint('./model/' + VERSION)
+    saver.restore(sess, ckpt)
