@@ -52,10 +52,8 @@ GAN consist of two network:
  - A generator G generate samples from a random noise Z. Generator objective is to generate sample that is as real as possible it could not be distinguished by Discriminator.
 
 ### Deep Convolution GAN (DCGAN)
-In DCGAN architecture, the discriminator `D` is Convolutional Neural Networks (CNN) that applies a lot of filters to extract various features from an image. The discriminator network will be trained to discriminate between the original and generated image. The process of convolution is shown in the illustration below:
-<p align="center">
+In DCGAN architecture, the discriminator `D` is Convolutional Neural Networks (CNN) that applies a lot of filters to extract various features from an image. The discriminator network will be trained to discriminate between the original and generated image. The process of convolution is shown in the illustration below:  
 ![](http://deeplearning.net/software/theano_versions/dev/_images/same_padding_no_strides_transposed.gif)
-</p>
 
 The network structure for the discriminator is given by:
 <center>
@@ -71,10 +69,9 @@ The network structure for the discriminator is given by:
 
 </center>
 
-The generator `G`, which is trained to generate image to fool the discriminator, is trained to generate image from a random input. In DCGAN architecture, the generator is represented by convolution networks that upsample the input. The goal is to process the small input and make an output that is bigger than the input. It works by expanding the input to have zero in-between and then do the convolution process over this expanded area. The convolution over this area will result in larger input for the next layer. The process of upsampling is shown below: 
-<p align="center">
+The generator `G`, which is trained to generate image to fool the discriminator, is trained to generate image from a random input. In DCGAN architecture, the generator is represented by convolution networks that upsample the input. The goal is to process the small input and make an output that is bigger than the input. It works by expanding the input to have zero in-between and then do the convolution process over this expanded area. The convolution over this area will result in larger input for the next layer. The process of upsampling is shown below:  
 ![](http://deeplearning.net/software/theano_versions/dev/_images/padding_strides_transposed.gif)
-</p>
+
 There are many name for this upsample process: full convolution, in-network upsampling, fractionally-strided convolution, deconvolution, or transposed convolution. 
 
 The network structure for the generator is given by:
@@ -113,8 +110,8 @@ The dataset of pokemon images are gathered from various sources:
 * https://www.kaggle.com/dollarakshay/pokemon-images/discussion
 * https://veekun.com/dex/downloads
 
-## Training result
-As I have only two-hour GPU option in my account! So I have only get two images of new Pokemons.
+## Training output
+As I have only `two-hour GPU` option in my account! So I have only get two images of new Pokemons. If you have access to high-level computing computer, you can train longer to get better results, to get more new Pokemons!
 
 ![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch50.jpg)
 ![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch100.jpg)
