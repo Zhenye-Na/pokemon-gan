@@ -24,7 +24,11 @@ flags.DEFINE_integer('HEIGHT', 128, 'Height of images.')
 flags.DEFINE_integer('WIDTH', 128, 'Width of images.')
 flags.DEFINE_integer('CHANNEL', 3, 'Number of channels of images.')
 <<<<<<< HEAD
+<<<<<<< HEAD
 flags.DEFINE_integer('EPOCH', 1000, 'Number of Epochs to run.')
+=======
+flags.DEFINE_integer('EPOCH', 5000, 'Number of Epochs to run.')
+>>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
 =======
 flags.DEFINE_integer('EPOCH', 5000, 'Number of Epochs to run.')
 >>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
@@ -55,6 +59,10 @@ def main(_):
     newPoke_path = './' + FLAGS.VERSION
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
 =======
 
 >>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
