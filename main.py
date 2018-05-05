@@ -23,21 +23,12 @@ flags.DEFINE_float('learning_rate', 2e-4, 'Initial learning rate.')
 flags.DEFINE_integer('HEIGHT', 128, 'Height of images.')
 flags.DEFINE_integer('WIDTH', 128, 'Width of images.')
 flags.DEFINE_integer('CHANNEL', 3, 'Number of channels of images.')
-<<<<<<< HEAD
-<<<<<<< HEAD
-flags.DEFINE_integer('EPOCH', 1000, 'Number of Epochs to run.')
-=======
 flags.DEFINE_integer('EPOCH', 5000, 'Number of Epochs to run.')
->>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
-=======
-flags.DEFINE_integer('EPOCH', 5000, 'Number of Epochs to run.')
->>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
 flags.DEFINE_integer('BATCH_SIZE', 64, 'Size of batch in update.')
 flags.DEFINE_string('VERSION', 'newPokemon', 'Directory of output')
 flags.DEFINE_string('process_method', 'default',
                     'Preprocess methods, supports [rgb, default, hsv]')
 FLAGS = flags.FLAGS
-# flags.DEFINE_string('opt_method', 'qp', 'Supports ["iter", "qp"]')
 
 
 def main(_):
@@ -58,14 +49,6 @@ def main(_):
     # newPoke_path = './' + VERSION
     newPoke_path = './' + FLAGS.VERSION
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
->>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
-=======
-
->>>>>>> 9dc905abc9e23b194ed2f7cc13c02a18025037da
     # Training
     train(
         HEIGHT=FLAGS.HEIGHT,
