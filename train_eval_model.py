@@ -188,29 +188,30 @@ def discriminator(input, is_train, reuse=False):
         # wgan just get rid of the sigmoid
         logits = tf.add(tf.matmul(fc1, w2), b2, name='logits')
         # dcgan
-        acted_out = tf.nn.sigmoid(logits)
+        # acted_out = tf.nn.sigmoid(logits)
     return logits  # , acted_out
 
 
-# def load(checkpoint_dir):
-#     import re
-#     print(" [*] Reading checkpoints...")
-#     checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir)
+def load(checkpoint_dir):
+    """Load model."""
+    import re
+    print(" [*] Reading checkpoints...")
+    checkpoint_dir = os.path.join(checkpoint_dir, self.model_dir)
 
-#     ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
-#     if ckpt and ckpt.model_checkpoint_path:
-#         ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
-#         self.saver.restore(self.sess, os.path.join(checkpoint_dir, ckpt_name))
-#         counter = int(next(re.finditer("(\d+)(?!.*\d)", ckpt_name)).group(0))
-#         print(" [*] Success to read {}".format(ckpt_name))
-#         return True, counter
-#     else:
-#         print(" [*] Failed to find a checkpoint")
-#         return False, 0
+    ckpt = tf.train.get_checkpoint_state(checkpoint_dir)
+    if ckpt and ckpt.model_checkpoint_path:
+        ckpt_name = os.path.basename(ckpt.model_checkpoint_path)
+        self.saver.restore(self.sess, os.path.join(checkpoint_dir, ckpt_name))
+        counter = int(next(re.finditer("(\d+)(?!.*\d)", ckpt_name)).group(0))
+        print(" [*] Success to read {}".format(ckpt_name))
+        return True, counter
+    else:
+        print(" [*] Failed to find a checkpoint")
+        return False, 0
 
 
-def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, process_method, newPoke_path
-          ):
+def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, process_method, newPoke_path):
+    """Train model."""
     random_dim = 100
 
     with tf.variable_scope('input'):
@@ -229,7 +230,8 @@ def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, pro
 
     # This optimizes the discriminator.
     d_loss = tf.reduce_mean(fake_result) - tf.reduce_mean(real_result)
-    g_loss = -tf.reduce_mean(fake_result)  # This optimizes the generator.
+    # This optimizes the generator.
+    g_loss = -tf.reduce_mean(fake_result)
 
     t_vars = tf.trainable_variables()
     d_vars = [var for var in t_vars if 'dis' in var.name]
@@ -256,8 +258,9 @@ def train(HEIGHT, WIDTH, EPOCH, BATCH_SIZE, CHANNEL, VERSION, learning_rate, pro
     # Prepare training
     save_path = saver.save(sess, "./tmp/model.ckpt")
     # save_path = saver.save(sess, "/output/tmp/model.ckpt")
-    ckpt = tf.train.latest_checkpoint('./model/' + VERSION)
-    saver.restore(sess, save_path)
+    save_path2 = './model/' + VERSION
+    ckpt = tf.train.latest_checkpoint(save_path2)
+    saver.restore(sess, save_path2)
     coord = tf.train.Coordinator()
     threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 

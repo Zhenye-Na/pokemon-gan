@@ -28,6 +28,8 @@ flags.DEFINE_integer('BATCH_SIZE', 64, 'Size of batch in update.')
 flags.DEFINE_string('VERSION', 'newPokemon', 'Directory of output')
 flags.DEFINE_string('process_method', 'default',
                     'Preprocess methods, supports [rgb, default, hsv]')
+flags.DEFINE_string('checkpointdir', './tmp/', 'checkpoint Directory')
+
 FLAGS = flags.FLAGS
 
 

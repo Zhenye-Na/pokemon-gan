@@ -1,0 +1,3 @@
+How convolution works. Each pixel is replaced by a weighted sum of the surrounding pixels. The neural network has to learn the weights. Picture from developer.apple.com.
+
+/Users/macbookpro/Downloads/kernel_convolution.jpg
