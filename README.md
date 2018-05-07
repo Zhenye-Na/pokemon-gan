@@ -18,8 +18,8 @@ OR
 
 [Google Drive](https://drive.google.com/open?id=1-y9IdUp0LroS0wve61pvvV5YQlAu3VWa)
 
-## Training process
-Training process is very **long**! Please do not train on your little tiny laptop! I have used `Floydhub` to train my model. However, only 2 hours of free trial for GPU option. You can select your favorite cloud computing platform ro train this awesome project, if you find `Training` is interesting.
+## Training with Floydhub
+Training process is very **long**! Please do not train on your poor little tiny laptop! I have used `Floydhub` to train my model. However, only 2 hours of free trial for GPU option. You can select your favorite cloud computing platform ro train this awesome project, if you find `Training` is interesting.
 
 If you wanna, you can monitor the training process I upload in `Floydhub` @ [here](https://www.floydhub.com/zayne/projects/pokemon-gan/29) with CPU  and [here](https://www.floydhub.com/zhenye/projects/pokemons/3) with GPU which is much faster!
 
@@ -35,6 +35,12 @@ This is the load of my training with CPU:
 ![](https://github.com/Zhenye-Na/pokemon-gan/blob/master/system%20metrics%20cpu.png)
 
 
+## Training with BlueWater
+I got access to BlueWater account this semester so I can use GPU to train this project again!!
+
+See Results [here]()!
+
+
 ## Dependencies
 
 ```bash
@@ -48,6 +54,7 @@ pip install -r requirements.txt
 > scipy  
 > numpy  
 > Pillow
+> Pytorch
 
 
 ## Usage
