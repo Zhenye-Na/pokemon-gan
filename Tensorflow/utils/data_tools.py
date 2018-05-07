@@ -18,7 +18,7 @@ def process_data(HEIGHT, WIDTH, BATCH_SIZE, CHANNEL):
     """
     # current_dir = os.getcwd()
 
-    current_dir = './'
+    current_dir = '../'
     # parent = os.path.dirname(current_dir)
     pokemon_dir = os.path.join(current_dir, 'data/preprocessed_data')
     # pokemon_dir = '/preprocessed_data'
