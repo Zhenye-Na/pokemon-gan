@@ -31,10 +31,10 @@ floyd run --cpu --env tensorflow-1.3 --message run --data zayne/datasets/preproc
 
 ### Training metrics
 This is the load of my training with GPU:  
-![GPU](https://github.com/Zhenye-Na/pokemon-gan/blob/master/system-metrics.png)
+![GPU](https://github.com/Zhenye-Na/pokemon-gan/blob/master/fig/system-metrics.png?raw=true)
 
 This is the load of my training with CPU:  
-![](https://github.com/Zhenye-Na/pokemon-gan/blob/master/system%20metrics%20cpu.png)
+![](https://github.com/Zhenye-Na/pokemon-gan/blob/master/fig/system%20metrics%20cpu.png?raw=true)
 
 
 ## Training with BlueWater
@@ -135,8 +135,13 @@ The dataset of pokemon images are gathered from various sources:
 ## Training output
 As I have only `two-hour GPU` option in my account! So I have only get two images of new Pokemons. If you have access to high-level computing computer, you can train longer to get better results, to get more new Pokemons!
 
-![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch50.jpg)
-![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/output/newPokemon/epoch100.jpg)
+- 800 Epochs
+
+![Epoch50](https://github.com/Zhenye-Na/pokemon-gan/blob/master/fig/1.gif?raw=true)
+
+- 1550 Epochs
+
+![Epoch100](https://github.com/Zhenye-Na/pokemon-gan/blob/master/fig/2.gif?raw=true)
 
 
 ## References
