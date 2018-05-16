@@ -17,6 +17,9 @@ class Generator(nn.Module):
     def __init__(self, ngpu):
         super(Generator, self).__init__()
         self.main = nn.Sequential(
+            nn.ConvTranspose2d(in_channels=1, out_channels=100, kernel_size=3, stride=1, padding=0)
+
+
 
         )
 
