@@ -13,10 +13,24 @@ import torchvision.transforms as transforms
 import torchvision.utils as vutils
 
 
-class Discriminator(nn.Module):
+class Generator(nn.Module):
     def __init__(self, ngpu):
-        super(Discriminator, self).__init__()
+        super(Generator, self).__init__()
+        self.main = nn.Sequential(
+
+        )
 
 
     def forward(self, input):
 
+
+
+class Discriminator(nn.Module):
+    def __init__(self, ngpu):
+        super(Discriminator, self).__init__()
+        self.ngpu = ngpu
+        self.main = nn.Sequential(
+
+        )
+
+    def forward(self, input):
