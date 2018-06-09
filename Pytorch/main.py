@@ -30,6 +30,7 @@ parser.add_argument('--imageSize', type=int, default=64, help='the height / widt
 parser.add_argument('--nz', type=int, default=100, help='size of the latent z vector')
 parser.add_argument('--niters', type=int, default=200, help='number of epochs to train')
 parser.add_argument('--resume', type=bool, default=False, help='resume training or not')
+parser.add_argument('--isTrain', type=bool, default=True, help='is training or not')
 parser.add_argument('--lr', type=float, default=0.00005, help='learning rate')
 parser.add_argument('--ngpu', type=int, default=0, help='number of GPUs to use')
 parser.add_argument('--cuda', action='store_true', help='enables cuda')
@@ -74,8 +75,8 @@ if opt.resume:
 else:
     print('==> Building model..')
     # Create an instance of the nn.module class defined above:
-    netD = Discriminator()
-    netG = Generator()
+    netD = Discriminator(trainset, opt.batchSize, reuse=isTrain)
+    netG = Generator(randomInput, opt.batchSize, reuse=True)
     start_epoch = 0
 
 # For training on GPU, we need to transfer net and data onto the GPU
